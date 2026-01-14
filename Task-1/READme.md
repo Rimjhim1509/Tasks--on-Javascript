@@ -1,4 +1,60 @@
+# JavaScript Event Loop – Asynchronous Execution Explained
 
+JavaScript is a **single-threaded language**, meaning it has **one call stack** and can execute only **one piece of code at a time**.  
+Yet, it handles **asynchronous operations** (timers, network requests, DOM events) without freezing the program.
+
+This happens because of the **Event Loop**, a core part of the JavaScript runtime:
+- **Browser** → V8 + Web APIs
+- **Node.js** → V8 + libuv
+
+The Event Loop enables **non-blocking I/O**, making JavaScript feel *concurrent* even though it’s single-threaded.
+
+---
+
+## 1. Key Components of the Event Loop
+
+### 🔹 Call Stack
+- **LIFO (Last In, First Out)**
+- Executes **synchronous code**
+- Functions are pushed when called and popped when returned
+- Event Loop works **only when stack is empty**
+
+---
+
+### 🔹 Web APIs / Host Environment
+Provided by:
+- **Browser**: `setTimeout`, `fetch`, DOM events
+- **Node.js**: `fs.readFile`, timers, networking
+
+Async operations are handled **outside the JS engine** here.
+
+---
+
+### 🔹 Callback Queue (Macrotask Queue)
+- **FIFO (First In, First Out)**
+- Contains callbacks from:
+  - `setTimeout`
+  - `setInterval`
+  - I/O
+  - DOM events
+- Also called **macrotasks**
+
+---
+
+### 🔹 Microtask Queue (Higher Priority)
+- Executed **before macrotasks**
+- Contains:
+  - `Promise.then / catch / finally`
+  - `queueMicrotask`
+  - `MutationObserver`
+
+---
+
+### 🔹 Render Queue (Browser Only)
+- Handles:
+  - Repaint
+  - Reflow
+- Checked **after microtasks, before next macrotask**
 ---
 
 ## 2. How the Event Loop Works (Algorithm)
